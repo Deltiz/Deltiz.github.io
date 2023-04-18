@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        #myDiv {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #myButton {
+            background-color: rgb(48, 48, 168);
+            font-size: 30px;
+            color: aliceblue;
+        }
+        button:hover{
+            transform: scale(1.2);
+            cursor: pointer;
+            opacity: 0.8;
+            background-image:  linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+        }
+    </style>
+
+    <script>
+        let myque = [];
+
+        let div = document.createElement("div");
+        div.id = "myDiv";
+        let button = document.createElement("button");
+        button.id = "myButton";
+        let buttontext = document.createTextNode("lägg till");
+        button.appendChild(buttontext);
+        div.appendChild(button);
+        document.body.appendChild(div);
+
+        button.addEventListener('click', function() {
+            let input = document.createElement("input");
+            input.id = "myInput";
+            input.type = "text";
+            input.placeholder = "lägg till text";
+
+            div.appendChild(input);
+            input.focus();
+
+            input.addEventListener('change', function() {
+                myque.push(input.value);
+                makeList();
+                input.remove();
+            });
+        });
+
+        function makeList() {
+            let list = document.getElementById("myList");
+            if (!list) {
+                let listContainer = document.createElement("div");
+                listContainer.id = "listContainer";
+                div.insertBefore(listContainer, button);
+
+                list = document.createElement("ul");
+                list.id = "myList";
+                listContainer.appendChild(list);
+            }
+            let li = document.createElement("li");
+            li.textContent = myque[myque.length - 1];
+            list.appendChild(li);
+
+            li.addEventListener('click', function() {
+                li.remove();
+            });
+        }
+    </script>
+</body>
+</html>

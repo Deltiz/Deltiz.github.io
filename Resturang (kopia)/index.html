@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        
+        background-image: linear-gradient(rgba(260, 255, 255, 0.10), rgba(255, 255, 255, 0.5)), url('/img/Skärmavbild\ 2023-04-14\ kl.\ 23.13.30.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-size: 85vh 85vh;
+        background-position: center center;
+        height: 85vh;
+       
+      }
+      .background {
+        background-position: center center;
+        height: 100vh;
+        width: 97vh;
+        border: 3px solid black;
+        border-radius: 40px;
+        margin: 4rem auto;
+        position: relative;
+        box-shadow: 1px 1px 55px rgb(16, 12, 12);
+        overflow: hidden;
+        
+      }
+      .button {
+        position: absolute;
+       
+      }
+      button{
+        background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+      }
+      button:hover{
+        transform: scale(1.2);
+        cursor: pointer;
+        opacity: 0.8;
+        background-image:  linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+
+      }
+      
+      .toggled {
+    background-image:  linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+  }
+  footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        padding: 10px;
+        background-image:  linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+        box-shadow: 1px 1px 100px rgb(74, 134, 213);
+        
+       
+      }
+
+      #myList li{
+        font-family: 'Open Sans', sans-serif;
+        font-size: 18px;
+       list-style-type: none;
+      }
+      li{
+        margin-left: -30px;
+      }
+    
+     #myList li:hover {
+      /*color: #4682B4;*/
+      color: #CD5C5C;
+
+
+
+      
+    }
+     
+      
+      
+    </style>
+  </head>
+  <body>
+    <div class="background">
+        <footer id="boka"></footer>
+    </div>
+  
+
+    <script>
+      //storlek 
+     var buttonCordinates = [
+        [207, 237],
+        [155, 292],
+        [207, 347],
+        [155, 423],
+        [214, 479],
+        [155, 542],
+        [361, 606],
+        [459, 606],
+        [553, 606],
+        [643, 606],
+        [437, 533],
+        [496, 533],
+        [565, 489],
+        [687, 490],
+        [687, 425],
+        [687, 362],
+     ]
+     //kordination 
+     var buttonProperties = [
+        [49, 38, 100],
+        [49, 38, 75],
+        [49, 38, 100],
+        [49, 38, 75],
+        [49, 38, 100],
+        [49, 38, 75],
+        [48, 52, 9],
+        [47, 51, 9],
+        [48, 52, 9],
+        [47, 51, 9],
+        [30, 38, 7],
+        [30, 38, 7],
+        [67, 66, 90],
+        [30, 38, 7],
+        [30, 38, 7],
+        [30, 38, 7],
+    ];
+    var ReserVationsCordi=[
+    [160, 8]
+    ];
+    var ReserVationsproperti=[
+        [58, 45, 9]
+    ];
+    //min que 
+    let myque=[];
+
+    function createReservationButton(){
+  const background =document.querySelector(".background");
+  const resButton = document.createElement("button");
+  resButton.id = "reservationButton";
+  resButton.className = "reservationButton";
+  resButton.classList.add("button");
+  resButton.style.left = ReserVationsCordi[0][0] + "px";
+  
+
+  resButton.style.top = ReserVationsCordi[0][1] + "px";
+  resButton.style.width = ReserVationsproperti[0][0] + "px";
+  resButton.style.height = ReserVationsproperti[0][1] + "px";
+  resButton.style.borderRadius = ReserVationsproperti[0][2] + "px";
+  resButton.style.backgroundImage = "url('/img/booking.png";
+  resButton.style.backgroundRepeat = "no-repeat";
+  resButton.style.backgroundSize = "cover";
+  resButton.style.backgroundPosition = "center";
+  resButton.style.border = "3px solid black";
+
+  background.appendChild(resButton);
+
+  //när knappen klickas på
+  resButton.addEventListener("click", function () {
+    let inputWrapper = document.createElement("div");
+    inputWrapper.id = "inputWrapper";
+    const footer = document.getElementById("boka");
+
+    footer.style.height = "150px";
+
+    let input = document.createElement("input");
+    input.type = "text";
+    input.id = "nameInput";
+    input.placeholder = "Namn";
+    inputWrapper.appendChild(input);
+
+    let numberOfPeopleInput = document.createElement("input");
+    numberOfPeopleInput.type = "number";
+    numberOfPeopleInput.id = "numberOfPeopleInput";
+    numberOfPeopleInput.placeholder = "Antal personer";
+    inputWrapper.appendChild(numberOfPeopleInput);
+
+    let submitButton = document.createElement("button");
+    submitButton.id = "submitButton";
+    submitButton.textContent = "Lägg till i kön";
+    inputWrapper.appendChild(submitButton);
+
+    footer.appendChild(inputWrapper);
+    input.focus();
+
+    submitButton.addEventListener("click", function () {
+      if (input.value && numberOfPeopleInput.value) {
+        myque.push(input.value + " + " + numberOfPeopleInput.value);
+        makeList();
+        inputWrapper.remove();
+        footer.style.height = "initial";
+      } else {
+        alert("Vänligen fyll i både namn och antal personer.");
+      }
+    });
+  });
+  function makeList() {
+  let list = document.getElementById("myList");
+  if (!list) {
+    let listContainer = document.createElement("div");
+    listContainer.id = "listContainer";
+    background.insertBefore(listContainer, resButton);
+
+    list = document.createElement("ul");
+    list.id = "myList";
+    listContainer.appendChild(list);
+  }
+  let li = document.createElement("li");
+  li.textContent = myque[myque.length - 1];
+  list.appendChild(li);
+
+  /*Create a remove icon and add it to the list item
+  let removeIcon = document.createElement("span");
+  removeIcon.textContent = " X";
+  removeIcon.style.cursor = "pointer";
+  removeIcon.style.marginLeft = "8px";
+  li.appendChild(removeIcon);
+
+  removeIcon.addEventListener("click", function () {
+    const avboka = "Vill du avboka reservationen för " + li.textContent + "?";
+    if (confirm(avboka)) {
+      li.remove();
+    }
+  });
+ */
+  li.addEventListener("click", function () {
+    const avboka = "Vill du avboka reservationen för " + li.textContent + "?";
+    if (confirm(avboka)) {
+      li.remove();
+    }
+  });
+ 
+}
+
+}
+//skapa mina knappar: 
+function createButtons() {
+    var background = document.querySelector(".background");
+
+    for (var i = 0; i < buttonCordinates.length; i++) {
+        var buttonDiv = document.createElement("div");
+        buttonDiv.classList.add("button");
+        buttonDiv.style.left = buttonCordinates[i][0] + "px";
+        buttonDiv.style.top = buttonCordinates[i][1] + "px";
+        
+        background.appendChild(buttonDiv);
+
+        var button = document.createElement("button");
+        button.innerText = i + 1;
+        button.setAttribute("id", "button" + (i + 1));
+        button.textContent = i + 1;
+        button.style.width = buttonProperties[i][0] + "px";
+        button.style.height = buttonProperties[i][1] + "px";
+        button.style.borderRadius = buttonProperties[i][2] + "px";
+        
+        buttonDiv.appendChild(button);
+        console.log(button);
+        button.addEventListener("click", onButtonClick); 
+    }
+}
+
+function onButtonClick(event) {
+    try {
+        const myButton = event.target;
+        if (myButton.classList.contains("toggled")) {
+            const confirmed = confirm("Bord " + myButton.textContent + " Avallokerat");
+            if (confirmed) {
+                myButton.classList.remove("toggled");
+            } else {
+                resetButtonColors();
+            }
+        } else {
+            myButton.classList.add("toggled");
+            confirm("Bord " + myButton.textContent + " Allokerat");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+    createButtons();
+    createReservationButton();
+    </script>
+  </body>
+</html>
